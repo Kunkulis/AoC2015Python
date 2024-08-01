@@ -1,29 +1,15 @@
-import codecs
-santas_list = open("test.txt").readlines()
+import ast
+santas_list = open("input.txt").readlines()
 
 def part1(santas_list: list[str]) -> int:
-    total_chars = 0
+    total_chars = sum(len(line.strip()) for line in santas_list)
+    eval_chars = sum(len(ast.literal_eval(line.strip())) for line in santas_list)
+    return total_chars-eval_chars
 
-    for line in santas_list:
-        line = line.strip()
-        total_chars += len(line)
-
-        line = line[1:-1]
-        
-        line = line.translate(str.maketrans({
-            "\\": r"\",  
-        }))
-        
-        
-
-    
-        
-
-
-    
-    return total_chars
-
-
-
+def part2(santas_list:list[str]) -> int:
+    original_chars = sum(len(line.strip()) for line in santas_list)
+    encoded_chars = sum(len('"' + line.strip().replace('\\', '\\\\').replace('"', '\\"') + '"') for line in santas_list)
+    return encoded_chars-original_chars
 
 print(part1(santas_list))
+print(part2(santas_list))
