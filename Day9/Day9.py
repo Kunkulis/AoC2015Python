@@ -1,4 +1,4 @@
-distances = open("test.txt").readlines()
+distances = open("input.txt").readlines()
 
 def prep_distances(distances:list[str]):
     split_distance = []
@@ -20,18 +20,25 @@ def build_graph(distances):
         graph[city2][city1]=distance
     return graph
 
-def dfs(graph):
+def dfs(graph,node,current_distance, visited, shortest_longest_distances):    
 
-def bfs(graph):
-
-def dijkstra(graph):
+    visited.add(node)        
+    if len(visited)==len(graph): 
+        shortest_longest_distances[0] = max(shortest_longest_distances[0], current_distance)
+        shortest_longest_distances[1] = min(shortest_longest_distances[1], current_distance)
+    else:
+        for neighbor, distance in graph[node].items():
+            if neighbor not in visited:
+                dfs(graph, neighbor, current_distance + distance, visited, shortest_longest_distances)
     
+    visited.remove(node)  
 
 def part1(distances:list[str]) -> int:
     graph = prep_distances(distances)
+    shortest_longest_distances = [0, float('inf')]
 
-
-
-    return 0
+    for node in graph:
+        dfs(graph,node,0,set(),shortest_longest_distances)    
+    return shortest_longest_distances
 
 print(part1(distances))
